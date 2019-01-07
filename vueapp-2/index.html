@@ -11,10 +11,45 @@
   </head>
   <body>
 
-    <div class="container" id="vApp">
+    <div class="container" id="vApp" @mousemove="updateXY">
       <div class="row">
         <div class="col m12">
-          <h1>Vueapp-2 <small>by {{ name }}</small></h1>
+          <h4>Vueapp-2 <small>by {{ name }}</small></h4>
+          <p>Your job position is, <strong> {{ job }} </strong> </p>
+          <p> {{ greet('night') }} </p>
+          <p>
+            <a :href="website">Want To Quench Your Curiosity?</a>
+          </p>
+          <div class="row">
+            <div class="col s12 m8">
+              <p>Your age is :: {{ age }} </p>
+            </div>
+            <div class="col s12 m4">
+              <button
+                @click="ongeza"
+                @click.right="age--"
+                title="Right-click to reduce age value"
+                class="btn btn-waves"
+              > Manipulate Age </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12 m12">
+              <table>
+                <caption>Your mouse-pointer coordinates</caption>
+                <thead>
+                  <th>X-value</th>
+                  <th>Y-value</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td> [ {{ x }} ]</td>
+                    <td> [ {{ y }} ] </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
