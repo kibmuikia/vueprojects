@@ -28,6 +28,11 @@
               <span> <p> {{ example4 }} </p> </span>
             </v-flex>
             <v-flex xs12 m6>
+              <span> <v-btn small @click='getAllVitabu' > Get All Books </v-btn> </span>
+              <span> <p v-for="book in example5" :key="book.title"> {{ book.title }} - {{ book.id }} </p> </span>
+            </v-flex>
+            <hr>
+            <v-flex xs12 m6 class="ma-4">
               <div class="">
                 <span left>Status: </span>
                 <div class="">
@@ -56,6 +61,7 @@ export default {
       example2: '',// for age
       example3: [],// for champions
       example4: [],// for champ by Name
+      example5: [],// for vitabu
     }
   },// END-data()
   methods: {
@@ -95,12 +101,22 @@ export default {
     async getChampionByName() {
       try {
         const res = await axios.post( 'http://localhost:4000/graphql', {
-          query : '{ getChampByName(name:\"Lixy\"){ name attackDamage} }'
+          query : '{ getChampByName(name:"Lixy"){ name attackDamage} }'
         } )
         this.example4 = res.data.data.getChampByName
       } catch (e) {
         this.msg = e
         console.log('Err: ', e);
+      }// END-try_catch
+    },
+    async getAllVitabu(){
+      try {
+        const res = await axios.post( 'http://localhost:4001/graphql-2', {
+          query : '{ vitabu { title id } }'
+        } )
+        this.example5 = res.data.data.vitabu;
+      } catch (e) {
+        this.msg = e;console.log('Err: ', e);
       }// END-try_catch
     }
   },// END-methods

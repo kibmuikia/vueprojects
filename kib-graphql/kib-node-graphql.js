@@ -1,4 +1,5 @@
 const express = require( 'express' );
+const cors = require('cors');
 const { makeExecutableSchema } = require( 'graphql-tools' );
 const graphqlHTTP = require( 'express-graphql' );
 var { find } = require('lodash');
@@ -34,8 +35,12 @@ const schema = makeExecutableSchema({
   typeDefs,
   resolvers
 });
+
 const app = express();
-app.use( '/graphql', graphqlHTTP({
+app.use( cors() );
+
+app.use( '/graphql-2', graphqlHTTP({
   schema, graphiql: true
 }) );
+
 app.listen( 4001, () => console.log('Listening on 4001') );
