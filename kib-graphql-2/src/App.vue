@@ -10,27 +10,49 @@
 
     <v-content>
       <v-container>
-        <v-layout column align-center>
+        <v-layout column align-center wrap>
 
-          <v-flex xs12 m6 color="grey">
+          <v-flex xs12 md6>
             <h1>Karibu to KibGraphQL-2</h1>
           </v-flex>
 
-          <v-flex xs12 m6 color="grey">
-            <div>
-              <span left> <v-btn color="success" small fab @click="getAllAuthors">
-                <v-icon>explore</v-icon>
-              </v-btn> </span>
-              <div> {{ allauthors }} </div>
-            </div>
+          <v-flex xs12 md6 mt-2>
+            <v-card>
+              <v-card-title primary-title>
+                <div>
+                  <div class="headline grey--text">All Authors</div>
+                  <span v-if="allauthors.length > 0"> {{ allauthors }} </span>
+                </div>
+              </v-card-title>
+              <v-card-actions>
+                <v-btn flat color="green" @click="getAllAuthors">Get the list</v-btn>
+              </v-card-actions>
+            </v-card>
           </v-flex>
 
-          <v-divider></v-divider>
+          <v-flex xs12 md6 mt-2>
+            <v-card>
+              <v-card-title primary-title>
+                <div>
+                  <div class="headline grey--text">Details of an Author</div>
+                  <span v-if="author.length > 0"> {{ author }} </span>
+                </div>
+              </v-card-title>
+              <v-card-actions>
+                <v-btn flat color="green" @click="getAuthor">View Details</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
 
-          <v-flex xs12 m6 color="grey">
-            <p class="subheading">
-              {{ status }}
-            </p>
+          <v-flex xs12 md6 v-if="status" mt-5>
+            <v-card>
+              <v-card-title primary-title>
+                Status message
+              </v-card-title>
+              <v-card-text>
+                <p class="subheading"> {{ status }} </p>
+              </v-card-text>
+            </v-card>
           </v-flex>
 
         </v-layout>
@@ -48,7 +70,8 @@ export default {
   },
   data () {
     return {
-      allauthors: [],
+      allauthors: {},
+      author: {},
       status: '',
     }
   },// END-data()
@@ -61,9 +84,22 @@ export default {
         this.allauthors = res.data.data.authors;
       } catch (e) {
         this.status = e;
-        console.log( 'Err: ', e );
+        //console.log( 'Err: ', e );
       }// END-try_catch
     },// end-getAllAuthors
+    async getAuthor() {
+      try {
+        const res = await axios.post( 'http://localhost:4002/rootEnd', {
+          query: '{ authorByName( id: 2 ) { id jina } }'
+        } );// authorByName( id: 1 ) { id jina age writtenWhat }
+
+        this.author = res.data.data.authorByName;
+        console.log( 'here' );
+      } catch (e) {
+        this.status = e
+        console.log( 'Err: ', e );
+      }// END-try_catch
+    }// END-getAuthor
   },// END-methods
 }
 </script>

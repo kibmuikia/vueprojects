@@ -1,7 +1,7 @@
 const { makeExecutableSchema } = require('graphql-tools');
 var { find, filter } = require('lodash');
 
-const writers = [
+const authorsArray = [
   {
     id: 1,
     jina: 'Strange',
@@ -21,24 +21,24 @@ const writers = [
     age: 20
   }
 ]
-const vitabu = [
+const novelsArray = [
   {
     id: 1,
     title: 'book1',
     type: 'Motivational',
-    author: 'Strange'
+    authorId: 1
   },
   {
     id: 2,
     title: 'book2',
     type: 'Fiction',
-    author: 'Lexy'
+    authorId: 2
   },
   {
     id: 3,
     title: 'book3',
     type: 'Iko tu',
-    author: 'Hulk'
+    authorId: 3
   },
 ];
 
@@ -68,22 +68,22 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    authors: () => writers,
-    novels: () => vitabu,
-    authorByName: ( _,{id} ) => find( writers, {id} ),
+    authors: () => authorsArray,
+    novels: () => novelsArray,
+    authorByName: ( _,{id} ) => find( authorsArray, {id} ),
     /*novelByTitle: ( _,{ title } ) => {
       return vitabu.find(x => x.title === title)
     }*///  ( _,{title} ) => find( vitabu, {title} ),
-    novelByTitle: ( _,{title} ) => find( vitabu, {title} )
-  },
+    novelByTitle: ( _,{title} ) => find( novelsArray, {title} )
+  }/*,
   Author: {
-    writtenWhat: author => filter( vitabu, { authorId: author.id } ),
+    writtenWhat: author => filter( novelsArray, { authorId: author.id } ),
     // posts: author => filter(posts, { authorId: author.id }),
   },
   Novel: {
-    author: novel => find( writers, { id: novel.authorId } ),
+    //author: novel => find( authorsArray, { id: novel.authorId } ),
     // author: post => find(authors, { id: post.authorId }),
-  }
+  }*/
 }
 const schema = makeExecutableSchema({
   typeDefs,
